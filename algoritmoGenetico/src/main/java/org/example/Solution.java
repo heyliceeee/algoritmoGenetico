@@ -36,6 +36,13 @@ public class Solution implements Comparable<Solution>
     }
 
 
+    public Solution(Solution sol)
+    {
+        this.wordSecret = String.valueOf(sol.wordSecret);
+        this.sol = new StringBuffer(sol.sol);
+    }
+
+
     public String getWordSecret() {
         return wordSecret;
     }
@@ -128,15 +135,9 @@ public class Solution implements Comparable<Solution>
      * procurar a palavra mais semelhante a palavra escondida
      * @return a quantidade de letras iguais
      */
-    private int getFitnessFunction() throws Exception {
+    private int getFitnessFunction() throws Exception
+    {
         total=0;
-        /*for(int i=0; i < this.sol.length(); i++)
-        {
-            if(sol.charAt(i) == wordSecret.charAt(i))
-            {
-                total++;
-            }
-        }   */
 
         List<Integer> result = evaluate(sol);
 
@@ -191,7 +192,6 @@ public class Solution implements Comparable<Solution>
             {
                 result.add(0);
             }
-
             else //n existe
             {
                 result.add(-1);
@@ -199,5 +199,16 @@ public class Solution implements Comparable<Solution>
         }
 
         return result;
+    }
+
+
+    public void mutate() {
+        Random random = new Random();
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        int index = random.nextInt(sol.length());
+        char randomChar = chars.charAt(random.nextInt(chars.length()));
+
+        sol.setCharAt(index, randomChar);
     }
 }
