@@ -146,14 +146,14 @@ public class Main {
     {
         try
         {
-            // Ler o arquivo JSON
+            //ler o JSON
             FileReader fileReader = new FileReader("D:\\githubProjects\\algoritmoGenetico\\algoritmoGenetico\\src\\main\\java\\org\\example\\GeneticAlgorithmConfig.json");
 
-            // Parsear o JSON
+            //parse o JSON
             JsonParser parser = new JsonParser();
             JsonObject jsonObject = parser.parse(fileReader).getAsJsonObject();
 
-            // Acessar cada variável
+            //aceder cada variável
             mutationRate = jsonObject.get("mutationRate").getAsInt();
             popSize = jsonObject.get("popSize").getAsInt();
             popHereditary = jsonObject.get("popHereditary").getAsInt();
@@ -162,7 +162,7 @@ public class Main {
             maxIterations = jsonObject.get("maxIterations").getAsInt();
             top = jsonObject.get("top").getAsInt();
 
-            // Fechar o FileReader
+            //fechar FileReader
             fileReader.close();
         }
         catch (IOException e)

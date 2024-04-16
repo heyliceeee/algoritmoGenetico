@@ -7,7 +7,7 @@ import java.util.Random;
 public class Solution implements Comparable<Solution>
 {
     private StringBuffer palavra; //o conteúdo da solução
-    private int total=0;
+    private int total=0; //total de letras iguais durante a funcao de fitness
 
 
     /**
@@ -28,52 +28,35 @@ public class Solution implements Comparable<Solution>
     }
 
 
+    /**
+     * constructor de cópia
+     * @param sol
+     */
     public Solution(Solution sol)
     {
         this.palavra = new StringBuffer(Main.TAM);
 
-        for(int i=0; i<Main.TAM; i++)
+        for(int i=0; i < Main.TAM; i++)
         {
             this.palavra.append(sol.getSol().charAt(i));
         }
     }
 
+
+    /**
+     * obter a palavra atual
+     * @return palavra atual
+     */
     public StringBuffer getSol()
     {
         return this.palavra;
     }
 
+
     /**
-     * Compares this object with the specified object for order.  Returns a
-     * negative integer, zero, or a positive integer as this object is less
-     * than, equal to, or greater than the specified object.
-     *
-     * <p>The implementor must ensure {@link Integer#signum
-     * signum}{@code (x.compareTo(y)) == -signum(y.compareTo(x))} for
-     * all {@code x} and {@code y}.  (This implies that {@code
-     * x.compareTo(y)} must throw an exception if and only if {@code
-     * y.compareTo(x)} throws an exception.)
-     *
-     * <p>The implementor must also ensure that the relation is transitive:
-     * {@code (x.compareTo(y) > 0 && y.compareTo(z) > 0)} implies
-     * {@code x.compareTo(z) > 0}.
-     *
-     * <p>Finally, the implementor must ensure that {@code
-     * x.compareTo(y)==0} implies that {@code signum(x.compareTo(z))
-     * == signum(y.compareTo(z))}, for all {@code z}.
-     *
+     * ordena as solucoes com base em sua funcao de fitness
      * @param o the object to be compared.
-     * @return a negative integer, zero, or a positive integer as this object
-     * is less than, equal to, or greater than the specified object.
-     * @throws NullPointerException if the specified object is null
-     * @throws ClassCastException   if the specified object's type prevents it
-     *                              from being compared to this object.
-     * @apiNote It is strongly recommended, but <i>not</i> strictly required that
-     * {@code (x.compareTo(y)==0) == (x.equals(y))}.  Generally speaking, any
-     * class that implements the {@code Comparable} interface and violates
-     * this condition should clearly indicate this fact.  The recommended
-     * language is "Note: this class has a natural ordering that is
-     * inconsistent with equals."
+     * @return
      */
     @Override
     public int compareTo(Solution o)
@@ -106,6 +89,10 @@ public class Solution implements Comparable<Solution>
     }
 
 
+    /**
+     * representar a solucao como uma string
+     * @return
+     */
     @Override
     public String toString()
     {
@@ -123,10 +110,8 @@ public class Solution implements Comparable<Solution>
     }
 
 
-    /** Função de fitness
-     *
-     * procurar a palavra mais semelhante a palavra escondida
-     * @return a quantidade de letras iguais
+    /**
+     * função de fitness que conta o número de letras iguais entre a palavra atual e a palavra secreta.
      */
     public int getFitnessFunction() throws Exception
     {
@@ -145,9 +130,7 @@ public class Solution implements Comparable<Solution>
 
 
     /**
-     * calcula a percentagem de semelhança da palavra com a palavra misterio
-     * @param total
-     * @return
+     * calcular a porcentagem de semelhança entre a palavra atual e a palavra secreta
      */
     private float percentage(int total)
     {
@@ -158,11 +141,7 @@ public class Solution implements Comparable<Solution>
 
 
     /**
-     * Função que implementa a mutação.
-     *
-     * Altera uma posição random da solução atual para conter um caracter gerado random.
-     * 'mutationRate' permite controlar quantos caracteres pode alterar em cada mutação.
-     * Não valida se altera múltiplas vezes o mesmo caracter ou se troca pelo mesmo caracter.
+     * implementar a mutação na solução atual.
      */
     public void mutate()
     {
@@ -174,7 +153,7 @@ public class Solution implements Comparable<Solution>
             int indexChar = random.nextInt(Main.chars.length());
             char randomChar = Main.chars.charAt(indexChar);
 
-            int index = random.nextInt(Main.TAM);//gerar uma posição a alterar random
+            int index = random.nextInt(Main.TAM); //gerar uma posição random para alterar na palavra
 
             this.palavra.setCharAt(index, randomChar);
         }
@@ -182,10 +161,7 @@ public class Solution implements Comparable<Solution>
 
 
     /**
-     * Implementa o cruzamento entre esta solução e uma outra solução recebida como parâmetro. Assume
-     * que tanto esta solução como a outra foram já alvo de deep copy
-     * @param mae a "mãe", segunda solução usada no cruzamento com esta (pai)
-     * @return um array contendo as duas soluções "filho" que resultam do cruzamento
+     * realizar o cruzamento entre esta solução e outra solução
      */
     public Solution[] cross(Solution mae)
     {
@@ -194,12 +170,12 @@ public class Solution implements Comparable<Solution>
         int pos = random.nextInt(Main.TAM); //gerar uma posição random
         Solution temp = new Solution(mae); //criar cópia temp
 
-        for (int i=pos; i < Main.TAM; i++)//preencher filho 1
+        for (int i=pos; i < Main.TAM; i++)//preencher o primeiro filho
         {
             mae.palavra.setCharAt(i, this.palavra.charAt(i));
         }
 
-        for (int i=pos; i < Main.TAM; i++)//preencher filho 2
+        for (int i=pos; i < Main.TAM; i++)//preencher o segundo filho
         {
             this.palavra.setCharAt(i, temp.palavra.charAt(i));
         }
